@@ -42,4 +42,3 @@ Projeto com o fito de aprender a fazer autenticação e autorização de diferen
     [WINDOWS] Execute o comando para rodar o projeto no windows:
 
     ./mvnw spring-boot:run
-    
