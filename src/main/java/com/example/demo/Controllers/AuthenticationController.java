@@ -1,9 +1,11 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Dto.AuthenticateDto;
+import com.example.demo.Dto.LoginResponseDto;
 import com.example.demo.Dto.RegistreDto;
 import com.example.demo.Models.User;
 import com.example.demo.Repositories.UserRepository;
+import com.example.demo.Services.TokenService;
 
 import javax.xml.crypto.Data;
 
@@ -28,12 +30,17 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated AuthenticateDto data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManeger.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal()); 
+
+        return ResponseEntity.ok(new LoginResponseDto(token));
     }
 
     @PostMapping("/register")
